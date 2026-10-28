@@ -14,7 +14,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
     initialSubject ? `Halo, aku ingin bertanya tentang karya: "${initialSubject}". ` : ''
   );
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false); // State untuk loading
+  const [isSending, setIsSending] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,29 +23,29 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
     setIsSending(true);
 
     try {
-      // Mengirim data ke FormSubmit
-      const response = await fetch('https://formsubmit.co/ajax/rano.aldinno@gmail.com', {
+      // Mengirim data ke Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
         body: JSON.stringify({
+          access_key: '5dba8133-2dbd-4a67-9081-18cb0db9b6e7', // ACCESS KEY ANDA
           name: name,
           email: email,
           message: message,
-          _subject: `Pesan Baru dari Website - ${name}`,
-          _url: 'https://rd-photography-gallery.vercel.app/', // PENTING UNTUK VERCEL
-          _captcha: 'false', // Matikan captcha untuk mode AJAX
+          subject: `Pesan Baru dari Website - ${name}`, // Subjek email yang akan Anda terima
         }),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         sound.playTick(720);
         setIsSubmitted(true);
       } else {
-        // Jika gagal, tampilkan pesan error sederhana
-        alert('Maaf, pesan gagal terkirim. Silakan coba lagi nanti.');
+        alert(`Maaf, pesan gagal terkirim: ${result.message}`);
       }
     } catch (error) {
       console.error('Error sending email:', error);
@@ -157,7 +157,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
                     </label>
                     <input
                       type="text"
-                      name="name" // Tambahkan atribut name
+                      name="name"
                       required
                       placeholder="Siapa namamu?"
                       value={name}
@@ -172,7 +172,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
                     </label>
                     <input
                       type="email"
-                      name="email" // Tambahkan atribut name
+                      name="email"
                       required
                       placeholder="Alamat emailmu"
                       value={email}
@@ -187,7 +187,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
                     PESAN
                   </label>
                   <textarea
-                    name="message" // Tambahkan atribut name
+                    name="message"
                     rows={4}
                     required
                     placeholder="Tulis apa pun yang ingin kamu sampaikan di sini..."
