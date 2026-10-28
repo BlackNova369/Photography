@@ -34,7 +34,9 @@ export const ContactView: React.FC<ContactViewProps> = ({ initialSubject = '' })
           name: name,
           email: email,
           message: message,
-          _subject: `Pesan Baru dari Website - ${name}`, // Subjek email yang akan Anda terima
+          _subject: `Pesan Baru dari Website - ${name}`,
+          _url: 'https://rd-photography-gallery.vercel.app/', // PENTING UNTUK VERCEL
+          _captcha: 'false', // Matikan captcha untuk mode AJAX
         }),
       });
 
